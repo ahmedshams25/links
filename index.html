@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدير الروابط الذكي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4cc9f0;
+            --danger-color: #f72585;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 30px;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-container input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-container input:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .search-container i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+        }
+
+        .sidebar {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .tags-list {
+            list-style: none;
+        }
+
+        .tags-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .tags-list a {
+            display: block;
+            padding: 8px 10px;
+            color: var(--dark-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            padding-right: 30px;
+        }
+
+        .tags-list a:hover, .tags-list a.active {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .tags-list a i {
+            margin-left: 8px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .tags-list .tag-count {
+            float: left;
+            background-color: #eee;
+            border-radius: 10px;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+        }
+
+        .delete-tag-btn {
+            position: absolute;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: none;
+        }
+
+        .tags-list li:hover .delete-tag-btn {
+            display: block;
+        }
+
+        .delete-tag-btn:hover {
+            color: var(--danger-color);
+        }
+
+        .add-tag {
+            margin-top: 20px;
+        }
+
+        .add-tag input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        .add-tag button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        .add-tag button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .links-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .links-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .links-header h2 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+
+        .add-link-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .add-link-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .link-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .link-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-thumbnail {
+            height: 160px;
+            background-color: #f0f0f0;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .link-thumbnail .no-thumbnail {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #999;
+            font-size: 3rem;
+        }
+
+        .link-tags {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .link-tag {
+            background-color: rgba(67, 97, 238, 0.9);
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+        }
+
+        .link-content {
+            padding: 15px;
+        }
+
+        .link-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--dark-color);
+            font-size: 1.1rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .link-url {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .link-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .link-date {
+            color: #999;
+            font-size: 0.8rem;
+        }
+
+        .link-action-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: color 0.3s;
+        }
+
+        .link-action-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h3 {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-modal-content {
+            width: 90%;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .close-video-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: #eee;
+            color: var(--dark-color);
+            border: none;
+        }
+
+        .btn-secondary:hover {
+            background-color: #ddd;
+        }
+
+        .tag-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag-option {
+            background-color: #eee;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tag-option.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .no-links {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .search-container {
+                width: 100%;
+            }
+
+            .links-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>مدير الروابط الذكي</h1>
+            <div class="header-content">
+                <div class="search-container">
+                    <input type="text" placeholder="ابحث عن روابط...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <h3>التصنيفات</h3>
+                <ul class="tags-list">
+                    <li><a href="#" class="active" data-tag="all"><i class="fas fa-layer-group"></i> الكل <span class="tag-count">0</span></a></li>
+                    <li><a href="#" data-tag="work"><i class="fas fa-briefcase"></i> عمل <span class="tag-count">0</span></a></li>
+                    <li><a href="#" data-tag="study"><i class="fas fa-graduation-cap"></i> دراسة <span class="tag-count">0</span></a></li>
+                    <li><a href="#" data-tag="personal"><i class="fas fa-user"></i> شخصي <span class="tag-count">0</span></a></li>
+                </ul>
+
+                <div class="add-tag">
+                    <h3>إضافة تصنيف</h3>
+                    <input type="text" id="new-tag-input" placeholder="اسم التصنيف الجديد">
+                    <button id="add-tag-btn"><i class="fas fa-plus"></i> إضافة</button>
+                </div>
+            </aside>
+
+            <main class="links-container">
+                <div class="links-header">
+                    <h2>كل الروابط</h2>
+                    <button class="add-link-btn" id="open-add-link-modal">
+                        <i class="fas fa-plus"></i> إضافة رابط
+                    </button>
+                </div>
+
+                <div class="links-grid" id="links-grid">
+                    <div class="no-links">
+                        <i class="fas fa-link" style="font-size: 3rem; margin-bottom: 15px; color: #ddd;"></i>
+                        <p>لا توجد روابط مضافة بعد</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Modal لإضافة رابط جديد -->
+    <div class="modal" id="add-link-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>إضافة رابط جديد</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="add-link-form">
+                <div class="form-group">
+                    <label for="link-title">عنوان الرابط</label>
+                    <input type="text" id="link-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="link-url">رابط URL</label>
+                    <input type="url" id="link-url" required>
+                </div>
+                <div class="form-group">
+                    <label for="link-description">وصف (اختياري)</label>
+                    <textarea id="link-description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>التصنيفات</label>
+                    <div class="tag-selector" id="tag-selector">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary close-modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ الرابط</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal لتعديل رابط -->
+    <div class="modal" id="edit-link-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>تعديل الرابط</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="edit-link-form">
+                <input type="hidden" id="edit-link-id">
+                <div class="form-group">
+                    <label for="edit-link-title">عنوان الرابط</label>
+                    <input type="text" id="edit-link-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-link-url">رابط URL</label>
+                    <input type="url" id="edit-link-url" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-link-description">وصف (اختياري)</label>
+                    <textarea id="edit-link-description"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>التصنيفات</label>
+                    <div class="tag-selector" id="edit-tag-selector">
+                        <!-- سيتم ملؤها بالجافاسكريبت -->
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary close-modal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ التعديلات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal لعرض الفيديو -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-content">
+            <button class="close-video-modal">&times;</button>
+            <div class="video-container" id="video-container"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // عناصر DOM
+            const linksGrid = document.getElementById('links-grid');
+            const openAddLinkModalBtn = document.getElementById('open-add-link-modal');
+            const addLinkModal = document.getElementById('add-link-modal');
+            const editLinkModal = document.getElementById('edit-link-modal');
+            const videoModal = document.getElementById('video-modal');
+            const videoContainer = document.getElementById('video-container');
+            const closeModalBtns = document.querySelectorAll('.close-modal');
+            const closeVideoModalBtn = document.querySelector('.close-video-modal');
+            const addLinkForm = document.getElementById('add-link-form');
+            const editLinkForm = document.getElementById('edit-link-form');
+            const tagSelector = document.getElementById('tag-selector');
+            const editTagSelector = document.getElementById('edit-tag-selector');
+            const addTagBtn = document.getElementById('add-tag-btn');
+            const newTagInput = document.getElementById('new-tag-input');
+            const tagsList = document.querySelector('.tags-list');
+            const searchInput = document.querySelector('.search-container input');
+            const tagLinks = document.querySelectorAll('.tags-list a[data-tag]');
+
+            // بيانات التطبيق
+            let links = JSON.parse(localStorage.getItem('links')) || [];
+            let tags = JSON.parse(localStorage.getItem('tags')) || ['work', 'study', 'personal'];
+            let currentTag = 'all';
+            let currentSearch = '';
+
+            // تهيئة التطبيق
+            function initApp() {
+                renderTagsList();
+                renderTagOptions();
+                renderLinks();
+                updateTagCounts();
+            }
+
+            // عرض الروابط
+            function renderLinks() {
+                if (links.length === 0) {
+                    linksGrid.innerHTML = `
+                        <div class="no-links">
+                            <i class="fas fa-link" style="font-size: 3rem; margin-bottom: 15px; color: #ddd;"></i>
+                            <p>لا توجد روابط مضافة بعد</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let filteredLinks = links;
+
+                // تصفية حسب التصنيف
+                if (currentTag !== 'all') {
+                    filteredLinks = filteredLinks.filter(link => link.tags.includes(currentTag));
+                }
+
+                // تصفية حسب البحث
+                if (currentSearch) {
+                    const searchTerm = currentSearch.toLowerCase();
+                    filteredLinks = filteredLinks.filter(link => 
+                        link.title.toLowerCase().includes(searchTerm) || 
+                        link.url.toLowerCase().includes(searchTerm) ||
+                        (link.description && link.description.toLowerCase().includes(searchTerm))
+                    );
+                }
+
+                if (filteredLinks.length === 0) {
+                    linksGrid.innerHTML = `
+                        <div class="no-links">
+                            <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; color: #ddd;"></i>
+                            <p>لا توجد روابط تطابق معايير البحث</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                linksGrid.innerHTML = '';
+                filteredLinks.forEach(link => {
+                    const linkCard = document.createElement('div');
+                    linkCard.className = 'link-card';
+                    linkCard.innerHTML = `
+                        <div class="link-thumbnail" style="background-image: url(${link.thumbnail || ''})" data-url="${link.url}">
+                            ${!link.thumbnail ? `<div class="no-thumbnail"><i class="fas fa-link"></i></div>` : ''}
+                            <div class="link-tags">
+                                ${link.tags.map(tag => `<span class="link-tag">${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                        <div class="link-content">
+                            <h3 class="link-title">${link.title}</h3>
+                            <p class="link-url">${link.url}</p>
+                            <div class="link-actions">
+                                <span class="link-date">${formatDate(link.date)}</span>
+                                <div>
+                                    <button class="link-action-btn edit-link" data-id="${link.id}"><i class="fas fa-edit"></i></button>
+                                    <button class="link-action-btn delete-link" data-id="${link.id}"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    linksGrid.appendChild(linkCard);
+                });
+
+                // إضافة معالجات الأحداث للأزرار
+                document.querySelectorAll('.edit-link').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        openEditModal(this.getAttribute('data-id'));
+                    });
+                });
+
+                document.querySelectorAll('.delete-link').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        deleteLink(this.getAttribute('data-id'));
+                    });
+                });
+
+                // إضافة حدث النقر على الصورة المصغرة لفتح الرابط
+                document.querySelectorAll('.link-thumbnail').forEach(thumbnail => {
+                    thumbnail.addEventListener('click', function(e) {
+                        const url = this.getAttribute('data-url');
+                        if (isVideoUrl(url)) {
+                            e.preventDefault();
+                            openVideoModal(url);
+                        } else {
+                            window.open(url, '_blank');
+                        }
+                    });
+                });
+            }
+
+            // فتح نموذج إضافة رابط
+            openAddLinkModalBtn.addEventListener('click', function() {
+                addLinkModal.style.display = 'flex';
+            });
+
+            // فتح نموذج تعديل رابط
+            function openEditModal(id) {
+                const link = links.find(link => link.id === id);
+                if (!link) return;
+
+                document.getElementById('edit-link-id').value = link.id;
+                document.getElementById('edit-link-title').value = link.title;
+                document.getElementById('edit-link-url').value = link.url;
+                document.getElementById('edit-link-description').value = link.description || '';
+
+                // تحديث خيارات التصنيف
+                editTagSelector.innerHTML = '';
+                tags.forEach(tag => {
+                    const tagOption = document.createElement('div');
+                    tagOption.className = `tag-option ${link.tags.includes(tag) ? 'selected' : ''}`;
+                    tagOption.textContent = tag;
+                    tagOption.addEventListener('click', function() {
+                        this.classList.toggle('selected');
+                    });
+                    editTagSelector.appendChild(tagOption);
+                });
+
+                editLinkModal.style.display = 'flex';
+            }
+
+            // فتح نافذة الفيديو المنبثقة
+            function openVideoModal(url) {
+                const videoId = getVideoId(url);
+                if (videoId) {
+                    let embedUrl = '';
+                    
+                    if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                        embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                    } else if (url.includes('vimeo.com')) {
+                        embedUrl = `https://player.vimeo.com/video/${videoId}`;
+                    }
+                    
+                    if (embedUrl) {
+                        videoContainer.innerHTML = `<iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe>`;
+                        videoModal.style.display = 'flex';
+                    } else {
+                        window.open(url, '_blank');
+                    }
+                } else {
+                    window.open(url, '_blank');
+                }
+            }
+
+            // الحصول على معرف الفيديو من الرابط
+            function getVideoId(url) {
+                if (url.includes('youtube.com/watch?v=')) {
+                    return url.split('v=')[1].split('&')[0];
+                } else if (url.includes('youtu.be/')) {
+                    return url.split('youtu.be/')[1].split('?')[0];
+                } else if (url.includes('vimeo.com/')) {
+                    return url.split('vimeo.com/')[1].split('?')[0];
+                }
+                return null;
+            }
+
+            // التحقق مما إذا كان الرابط يحتوي على فيديو
+            function isVideoUrl(url) {
+                return url.includes('youtube.com') || 
+                       url.includes('youtu.be') || 
+                       url.includes('vimeo.com');
+            }
+
+            // إغلاق النماذج
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    addLinkModal.style.display = 'none';
+                    editLinkModal.style.display = 'none';
+                });
+            });
+
+            // إغلاق نافذة الفيديو
+            closeVideoModalBtn.addEventListener('click', function() {
+                videoModal.style.display = 'none';
+                videoContainer.innerHTML = '';
+            });
+
+            // إغلاق النماذج عند النقر خارجها
+            window.addEventListener('click', function(e) {
+                if (e.target === addLinkModal) {
+                    addLinkModal.style.display = 'none';
+                }
+                if (e.target === editLinkModal) {
+                    editLinkModal.style.display = 'none';
+                }
+                if (e.target === videoModal) {
+                    videoModal.style.display = 'none';
+                    videoContainer.innerHTML = '';
+                }
+            });
+
+            // إضافة رابط جديد
+            addLinkForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('link-title').value;
+                const url = document.getElementById('link-url').value;
+                const description = document.getElementById('link-description').value;
+                
+                // الحصول على التصنيفات المحددة
+                const selectedTags = [];
+                tagSelector.querySelectorAll('.tag-option.selected').forEach(option => {
+                    selectedTags.push(option.textContent);
+                });
+
+                if (!title || !url) return;
+
+                const newLink = {
+                    id: generateId(),
+                    title,
+                    url,
+                    description,
+                    tags: selectedTags,
+                    date: new Date().toISOString(),
+                    thumbnail: `https://api.microlink.io/?url=${encodeURIComponent(url)}&screenshot=true&meta=false&embed=screenshot.url`
+                };
+
+                links.unshift(newLink);
+                saveLinks();
+                renderLinks();
+                updateTagCounts();
+                
+                // إعادة تعيين النموذج
+                addLinkForm.reset();
+                tagSelector.querySelectorAll('.tag-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                
+                addLinkModal.style.display = 'none';
+            });
+
+            // تعديل رابط موجود
+            editLinkForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const id = document.getElementById('edit-link-id').value;
+                const title = document.getElementById('edit-link-title').value;
+                const url = document.getElementById('edit-link-url').value;
+                const description = document.getElementById('edit-link-description').value;
+                
+                // الحصول على التصنيفات المحددة
+                const selectedTags = [];
+                editTagSelector.querySelectorAll('.tag-option.selected').forEach(option => {
+                    selectedTags.push(option.textContent);
+                });
+
+                if (!id || !title || !url) return;
+
+                const linkIndex = links.findIndex(link => link.id === id);
+                if (linkIndex === -1) return;
+
+                links[linkIndex] = {
+                    ...links[linkIndex],
+                    title,
+                    url,
+                    description,
+                    tags: selectedTags
+                };
+
+                saveLinks();
+                renderLinks();
+                updateTagCounts();
+                editLinkModal.style.display = 'none';
+            });
+
+            // حذف رابط
+            function deleteLink(id) {
+                if (confirm('هل أنت متأكد من حذف هذا الرابط؟')) {
+                    links = links.filter(link => link.id !== id);
+                    saveLinks();
+                    renderLinks();
+                    updateTagCounts();
+                }
+            }
+
+            // إضافة تصنيف جديد
+            addTagBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const newTag = newTagInput.value.trim();
+                if (newTag && !tags.includes(newTag)) {
+                    tags.push(newTag);
+                    saveTags();
+                    renderTagsList();
+                    renderTagOptions();
+                    newTagInput.value = '';
+                    updateTagCounts();
+                }
+            });
+
+            // حذف تصنيف
+            function deleteTag(tagToDelete) {
+                if (confirm(`هل أنت متأكد من حذف التصنيف "${tagToDelete}"؟ سيتم إزالته من جميع الروابط.`)) {
+                    // حذف التصنيف من القائمة
+                    tags = tags.filter(tag => tag !== tagToDelete);
+                    
+                    // إزالة التصنيف من جميع الروابط
+                    links.forEach(link => {
+                        link.tags = link.tags.filter(tag => tag !== tagToDelete);
+                    });
+                    
+                    // إذا كان التصنيف الحالي هو الذي تم حذفه، انتقل إلى "الكل"
+                    if (currentTag === tagToDelete) {
+                        currentTag = 'all';
+                        document.querySelector('.tags-list a.active').classList.remove('active');
+                        document.querySelector('.tags-list a[data-tag="all"]').classList.add('active');
+                    }
+                    
+                    saveTags();
+                    saveLinks();
+                    renderTagsList();
+                    renderTagOptions();
+                    renderLinks();
+                    updateTagCounts();
+                }
+            }
+
+            // عرض قائمة التصنيفات
+            function renderTagsList() {
+                // الحفاظ على العناصر الثابتة (الكل، عمل، دراسة، شخصي)
+                const staticItems = Array.from(tagsList.children).slice(0, 4);
+                tagsList.innerHTML = '';
+                staticItems.forEach(item => tagsList.appendChild(item));
+
+                // إضافة التصنيفات المخصصة
+                tags.filter(tag => !['work', 'study', 'personal'].includes(tag)).forEach(tag => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <a href="#" data-tag="${tag}">
+                            <i class="fas fa-tag"></i> ${tag}
+                            <span class="tag-count">${links.filter(link => link.tags.includes(tag)).length}</span>
+                        </a>
+                        <button class="delete-tag-btn" data-tag="${tag}" title="حذف التصنيف">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    tagsList.appendChild(li);
+                    
+                    // إضافة حدث النقر لحذف التصنيف
+                    li.querySelector('.delete-tag-btn').addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteTag(this.getAttribute('data-tag'));
+                    });
+                });
+
+                // إضافة حدث النقر للتصنيفات الجديدة
+                document.querySelectorAll('.tags-list a[data-tag]').forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        currentTag = this.getAttribute('data-tag');
+                        document.querySelector('.tags-list a.active').classList.remove('active');
+                        this.classList.add('active');
+                        renderLinks();
+                    });
+                });
+
+                // إضافة زر إضافة تصنيف
+                const addTagItem = document.createElement('li');
+                addTagItem.className = 'add-tag-item';
+                tagsList.appendChild(addTagItem);
+            }
+
+            // عرض خيارات التصنيف في النماذج
+            function renderTagOptions() {
+                tagSelector.innerHTML = '';
+                editTagSelector.innerHTML = '';
+                
+                tags.forEach(tag => {
+                    const tagOption = document.createElement('div');
+                    tagOption.className = 'tag-option';
+                    tagOption.textContent = tag;
+                    tagOption.addEventListener('click', function() {
+                        this.classList.toggle('selected');
+                    });
+                    tagSelector.appendChild(tagOption.cloneNode(true));
+                });
+            }
+
+            // تحديث عدد الروابط في كل تصنيف
+            function updateTagCounts() {
+                document.querySelectorAll('.tags-list a[data-tag]').forEach(link => {
+                    const tag = link.getAttribute('data-tag');
+                    const countSpan = link.querySelector('.tag-count');
+                    
+                    if (tag === 'all') {
+                        countSpan.textContent = links.length;
+                    } else {
+                        countSpan.textContent = links.filter(link => link.tags.includes(tag)).length;
+                    }
+                });
+            }
+
+            // البحث عن الروابط
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value;
+                renderLinks();
+            });
+
+            // حفظ الروابط في localStorage
+            function saveLinks() {
+                localStorage.setItem('links', JSON.stringify(links));
+            }
+
+            // حفظ التصنيفات في localStorage
+            function saveTags() {
+                localStorage.setItem('tags', JSON.stringify(tags));
+            }
+
+            // توليد معرف فريد
+            function generateId() {
+                return Date.now().toString(36) + Math.random().toString(36).substr(2);
+            }
+
+            // تنسيق التاريخ
+            function formatDate(dateString) {
+                const date = new Date(dateString);
+                return date.toLocaleDateString('ar-EG', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            }
+
+            // بدء التطبيق
+            initApp();
+        });
+    </script>
+</body>
+</html>
