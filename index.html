@@ -14,6 +14,7 @@
             --dark-color: #212529;
             --success-color: #4cc9f0;
             --danger-color: #f72585;
+            --warning-color: #f8961e;
         }
 
         * {
@@ -42,6 +43,7 @@
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
         header h1 {
@@ -55,6 +57,59 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 20px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .auth-btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .login-btn {
+            background-color: white;
+            color: var(--primary-color);
+        }
+
+        .login-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .logout-btn {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background-color: #e1156d;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 500;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .search-container {
@@ -235,6 +290,29 @@
             background-color: var(--secondary-color);
         }
 
+        .sync-btn {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s;
+            margin-left: 10px;
+        }
+
+        .sync-btn:hover {
+            background-color: #3ab4d8;
+        }
+
+        .sync-btn.syncing {
+            background-color: var(--warning-color);
+            pointer-events: none;
+        }
+
         .links-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -335,6 +413,10 @@
             color: var(--primary-color);
         }
 
+        .link-action-btn.delete-btn:hover {
+            color: var(--danger-color);
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -355,6 +437,18 @@
             max-width: 500px;
             padding: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .modal-header {
@@ -396,6 +490,7 @@
             background-color: white;
             border-radius: 10px;
             overflow: hidden;
+            animation: modalFadeIn 0.3s;
         }
 
         .video-container {
@@ -515,6 +610,159 @@
             grid-column: 1 / -1;
         }
 
+        .login-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-content {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .login-content h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .login-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .login-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .google-btn {
+            background-color: #4285F4;
+            color: white;
+        }
+
+        .google-btn:hover {
+            background-color: #357ABD;
+        }
+
+        .github-btn {
+            background-color: #333;
+            color: white;
+        }
+
+        .github-btn:hover {
+            background-color: #222;
+        }
+
+        .email-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .email-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .email-login-form {
+            display: none;
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .email-login-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .email-login-form button {
+            width: 100%;
+            padding: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: toastFadeIn 0.3s;
+        }
+
+        @keyframes toastFadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .toast.success {
+            background-color: var(--success-color);
+        }
+
+        .toast.error {
+            background-color: var(--danger-color);
+        }
+
+        .toast.warning {
+            background-color: var(--warning-color);
+        }
+
         @media (max-width: 768px) {
             .main-content {
                 grid-template-columns: 1fr;
@@ -532,6 +780,16 @@
             .links-grid {
                 grid-template-columns: 1fr;
             }
+
+            .links-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .add-link-btn, .sync-btn {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -543,6 +801,11 @@
                 <div class="search-container">
                     <input type="text" placeholder="ابحث عن روابط...">
                     <i class="fas fa-search"></i>
+                </div>
+                <div class="auth-buttons" id="auth-buttons">
+                    <button class="auth-btn login-btn" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                    </button>
                 </div>
             </div>
         </header>
@@ -567,9 +830,14 @@
             <main class="links-container">
                 <div class="links-header">
                     <h2>كل الروابط</h2>
-                    <button class="add-link-btn" id="open-add-link-modal">
-                        <i class="fas fa-plus"></i> إضافة رابط
-                    </button>
+                    <div>
+                        <button class="sync-btn" id="sync-btn">
+                            <i class="fas fa-sync-alt"></i> مزامنة
+                        </button>
+                        <button class="add-link-btn" id="open-add-link-modal">
+                            <i class="fas fa-plus"></i> إضافة رابط
+                        </button>
+                    </div>
                 </div>
 
                 <div class="links-grid" id="links-grid">
@@ -659,7 +927,63 @@
         </div>
     </div>
 
+    <!-- Modal لتسجيل الدخول -->
+    <div class="login-modal" id="login-modal">
+        <div class="login-content">
+            <h3>تسجيل الدخول</h3>
+            <p>سجل الدخول لحفظ روابطك ومزامنتها على جميع أجهزتك</p>
+            
+            <div class="login-methods">
+                <button class="login-btn google-btn" id="google-login-btn">
+                    <i class="fab fa-google"></i> تسجيل الدخول باستخدام جوجل
+                </button>
+                <button class="login-btn github-btn" id="github-login-btn">
+                    <i class="fab fa-github"></i> تسجيل الدخول باستخدام جيت هاب
+                </button>
+                <button class="login-btn email-btn" id="email-login-btn">
+                    <i class="fas fa-envelope"></i> تسجيل الدخول باستخدام البريد
+                </button>
+            </div>
+            
+            <div class="email-login-form" id="email-login-form">
+                <input type="email" id="login-email" placeholder="البريد الإلكتروني" required>
+                <input type="password" id="login-password" placeholder="كلمة المرور" required>
+                <button id="submit-email-login">تسجيل الدخول</button>
+                <p style="margin-top: 10px; font-size: 0.9rem;">ليس لديك حساب؟ <a href="#" id="show-signup">أنشئ حساباً</a></p>
+            </div>
+            
+            <div class="email-login-form" id="email-signup-form" style="display: none;">
+                <input type="text" id="signup-name" placeholder="الاسم" required>
+                <input type="email" id="signup-email" placeholder="البريد الإلكتروني" required>
+                <input type="password" id="signup-password" placeholder="كلمة المرور (6 أحرف على الأقل)" required>
+                <button id="submit-email-signup">إنشاء حساب</button>
+                <p style="margin-top: 10px; font-size: 0.9rem;">لديك حساب بالفعل؟ <a href="#" id="show-login">سجل الدخول</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-database-compat.js"></script>
+
     <script>
+        // تهيئة Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBCS0eZxI_ICC0-gBxvy4O5r8bqpDl_THM",
+            authDomain: "links-ae0ca.firebaseapp.com",
+            projectId: "links-ae0ca",
+            storageBucket: "links-ae0ca.appspot.com",
+            messagingSenderId: "156091937139",
+            appId: "1:156091937139:web:e97329efa9d81535b1d506",
+            measurementId: "G-DFGGM61SDT"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+
         document.addEventListener('DOMContentLoaded', function() {
             // عناصر DOM
             const linksGrid = document.getElementById('links-grid');
@@ -679,12 +1003,27 @@
             const tagsList = document.querySelector('.tags-list');
             const searchInput = document.querySelector('.search-container input');
             const tagLinks = document.querySelectorAll('.tags-list a[data-tag]');
+            const loginBtn = document.getElementById('login-btn');
+            const authButtons = document.getElementById('auth-buttons');
+            const loginModal = document.getElementById('login-modal');
+            const googleLoginBtn = document.getElementById('google-login-btn');
+            const githubLoginBtn = document.getElementById('github-login-btn');
+            const emailLoginBtn = document.getElementById('email-login-btn');
+            const emailLoginForm = document.getElementById('email-login-form');
+            const submitEmailLogin = document.getElementById('submit-email-login');
+            const showSignup = document.getElementById('show-signup');
+            const emailSignupForm = document.getElementById('email-signup-form');
+            const submitEmailSignup = document.getElementById('submit-email-signup');
+            const showLogin = document.getElementById('show-login');
+            const syncBtn = document.getElementById('sync-btn');
 
             // بيانات التطبيق
             let links = JSON.parse(localStorage.getItem('links')) || [];
             let tags = JSON.parse(localStorage.getItem('tags')) || ['work', 'study', 'personal'];
             let currentTag = 'all';
             let currentSearch = '';
+            let currentUser = null;
+            let isSyncing = false;
 
             // تهيئة التطبيق
             function initApp() {
@@ -692,6 +1031,202 @@
                 renderTagOptions();
                 renderLinks();
                 updateTagCounts();
+                
+                // مراقبة حالة المصادقة
+                auth.onAuthStateChanged(user => {
+                    if (user) {
+                        currentUser = user;
+                        showUserInfo(user);
+                        // تحميل البيانات من Firebase عند تسجيل الدخول
+                        syncDataFromFirebase();
+                    } else {
+                        currentUser = null;
+                        showLoginButton();
+                    }
+                });
+            }
+
+            // عرض معلومات المستخدم
+            function showUserInfo(user) {
+                authButtons.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            ${user.photoURL ? 
+                                `<img src="${user.photoURL}" alt="${user.displayName}" style="width:100%;height:100%;border-radius:50%;">` : 
+                                `<i class="fas fa-user"></i>`}
+                        </div>
+                        <span>${user.displayName || user.email}</span>
+                    </div>
+                    <button class="auth-btn logout-btn" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> تسجيل الخروج
+                    </button>
+                `;
+                
+                document.getElementById('logout-btn').addEventListener('click', logout);
+            }
+
+            // عرض زر تسجيل الدخول
+            function showLoginButton() {
+                authButtons.innerHTML = `
+                    <button class="auth-btn login-btn" id="login-btn">
+                        <i class="fas fa-sign-in-alt"></i> تسجيل الدخول
+                    </button>
+                `;
+                document.getElementById('login-btn').addEventListener('click', () => {
+                    loginModal.style.display = 'flex';
+                });
+            }
+
+            // تسجيل الدخول باستخدام جوجل
+            function loginWithGoogle() {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                auth.signInWithPopup(provider)
+                    .then((result) => {
+                        showToast('تم تسجيل الدخول بنجاح', 'success');
+                        loginModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        showToast('حدث خطأ أثناء تسجيل الدخول: ' + error.message, 'error');
+                    });
+            }
+
+            // تسجيل الدخول باستخدام جيت هاب
+            function loginWithGithub() {
+                const provider = new firebase.auth.GithubAuthProvider();
+                auth.signInWithPopup(provider)
+                    .then((result) => {
+                        showToast('تم تسجيل الدخول بنجاح', 'success');
+                        loginModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        showToast('حدث خطأ أثناء تسجيل الدخول: ' + error.message, 'error');
+                    });
+            }
+
+            // تسجيل الدخول باستخدام البريد الإلكتروني
+            function loginWithEmail(email, password) {
+                auth.signInWithEmailAndPassword(email, password)
+                    .then((result) => {
+                        showToast('تم تسجيل الدخول بنجاح', 'success');
+                        loginModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        showToast('حدث خطأ أثناء تسجيل الدخول: ' + error.message, 'error');
+                    });
+            }
+
+            // إنشاء حساب باستخدام البريد الإلكتروني
+            function signUpWithEmail(name, email, password) {
+                auth.createUserWithEmailAndPassword(email, password)
+                    .then((result) => {
+                        // تحديث اسم المستخدم
+                        return result.user.updateProfile({
+                            displayName: name
+                        });
+                    })
+                    .then(() => {
+                        showToast('تم إنشاء الحساب بنجاح', 'success');
+                        loginModal.style.display = 'none';
+                    })
+                    .catch((error) => {
+                        showToast('حدث خطأ أثناء إنشاء الحساب: ' + error.message, 'error');
+                    });
+            }
+
+            // تسجيل الخروج
+            function logout() {
+                auth.signOut()
+                    .then(() => {
+                        showToast('تم تسجيل الخروج بنجاح', 'success');
+                    })
+                    .catch((error) => {
+                        showToast('حدث خطأ أثناء تسجيل الخروج: ' + error.message, 'error');
+                    });
+            }
+
+            // مزامنة البيانات مع Firebase
+            function syncDataWithFirebase() {
+                if (!currentUser || isSyncing) return;
+                
+                isSyncing = true;
+                syncBtn.classList.add('syncing');
+                syncBtn.innerHTML = `<div class="loading-spinner"></div> جاري المزامنة...`;
+                
+                const userRef = database.ref('users/' + currentUser.uid);
+                
+                userRef.set({
+                    links: links,
+                    tags: tags,
+                    lastUpdated: firebase.database.ServerValue.TIMESTAMP
+                })
+                .then(() => {
+                    showToast('تم مزامنة البيانات بنجاح', 'success');
+                    localStorage.setItem('lastSynced', new Date().toISOString());
+                })
+                .catch((error) => {
+                    showToast('حدث خطأ أثناء المزامنة: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    isSyncing = false;
+                    syncBtn.classList.remove('syncing');
+                    syncBtn.innerHTML = `<i class="fas fa-sync-alt"></i> مزامنة`;
+                });
+            }
+
+            // جلب البيانات من Firebase
+            function syncDataFromFirebase() {
+                if (!currentUser) return;
+                
+                isSyncing = true;
+                syncBtn.classList.add('syncing');
+                syncBtn.innerHTML = `<div class="loading-spinner"></div> جاري التحميل...`;
+                
+                const userRef = database.ref('users/' + currentUser.uid);
+                
+                userRef.once('value')
+                .then((snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        links = data.links || [];
+                        tags = data.tags || ['work', 'study', 'personal'];
+                        
+                        // حفظ البيانات محلياً
+                        localStorage.setItem('links', JSON.stringify(links));
+                        localStorage.setItem('tags', JSON.stringify(tags));
+                        
+                        // إعادة عرض البيانات
+                        renderTagsList();
+                        renderTagOptions();
+                        renderLinks();
+                        updateTagCounts();
+                        
+                        showToast('تم تحميل البيانات بنجاح', 'success');
+                    }
+                })
+                .catch((error) => {
+                    showToast('حدث خطأ أثناء تحميل البيانات: ' + error.message, 'error');
+                })
+                .finally(() => {
+                    isSyncing = false;
+                    syncBtn.classList.remove('syncing');
+                    syncBtn.innerHTML = `<i class="fas fa-sync-alt"></i> مزامنة`;
+                });
+            }
+
+            // عرض إشعار
+            function showToast(message, type = 'success') {
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                    ${message}
+                `;
+                
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.remove();
+                }, 3000);
             }
 
             // عرض الروابط
@@ -751,7 +1286,7 @@
                                 <span class="link-date">${formatDate(link.date)}</span>
                                 <div>
                                     <button class="link-action-btn edit-link" data-id="${link.id}"><i class="fas fa-edit"></i></button>
-                                    <button class="link-action-btn delete-link" data-id="${link.id}"><i class="fas fa-trash"></i></button>
+                                    <button class="link-action-btn delete-btn delete-link" data-id="${link.id}"><i class="fas fa-trash"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -884,6 +1419,11 @@
                     videoModal.style.display = 'none';
                     videoContainer.innerHTML = '';
                 }
+                if (e.target === loginModal) {
+                    loginModal.style.display = 'none';
+                    emailLoginForm.style.display = 'none';
+                    emailSignupForm.style.display = 'none';
+                }
             });
 
             // إضافة رابط جديد
@@ -924,6 +1464,11 @@
                 });
                 
                 addLinkModal.style.display = 'none';
+                
+                // مزامنة مع Firebase إذا كان المستخدم مسجل الدخول
+                if (currentUser) {
+                    syncDataWithFirebase();
+                }
             });
 
             // تعديل رابط موجود
@@ -958,6 +1503,11 @@
                 renderLinks();
                 updateTagCounts();
                 editLinkModal.style.display = 'none';
+                
+                // مزامنة مع Firebase إذا كان المستخدم مسجل الدخول
+                if (currentUser) {
+                    syncDataWithFirebase();
+                }
             });
 
             // حذف رابط
@@ -967,6 +1517,11 @@
                     saveLinks();
                     renderLinks();
                     updateTagCounts();
+                    
+                    // مزامنة مع Firebase إذا كان المستخدم مسجل الدخول
+                    if (currentUser) {
+                        syncDataWithFirebase();
+                    }
                 }
             }
 
@@ -981,6 +1536,11 @@
                     renderTagOptions();
                     newTagInput.value = '';
                     updateTagCounts();
+                    
+                    // مزامنة مع Firebase إذا كان المستخدم مسجل الدخول
+                    if (currentUser) {
+                        syncDataWithFirebase();
+                    }
                 }
             });
 
@@ -1008,6 +1568,11 @@
                     renderTagOptions();
                     renderLinks();
                     updateTagCounts();
+                    
+                    // مزامنة مع Firebase إذا كان المستخدم مسجل الدخول
+                    if (currentUser) {
+                        syncDataWithFirebase();
+                    }
                 }
             }
 
@@ -1116,6 +1681,64 @@
                     day: 'numeric'
                 });
             }
+
+            // أحداث تسجيل الدخول
+            loginBtn.addEventListener('click', () => {
+                loginModal.style.display = 'flex';
+            });
+
+            googleLoginBtn.addEventListener('click', loginWithGoogle);
+            githubLoginBtn.addEventListener('click', loginWithGithub);
+            
+            emailLoginBtn.addEventListener('click', () => {
+                emailLoginForm.style.display = 'block';
+                emailSignupForm.style.display = 'none';
+            });
+            
+            showSignup.addEventListener('click', (e) => {
+                e.preventDefault();
+                emailLoginForm.style.display = 'none';
+                emailSignupForm.style.display = 'block';
+            });
+            
+            showLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                emailSignupForm.style.display = 'none';
+                emailLoginForm.style.display = 'block';
+            });
+            
+            submitEmailLogin.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                if (email && password) {
+                    loginWithEmail(email, password);
+                }
+            });
+            
+            submitEmailSignup.addEventListener('click', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signup-name').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                
+                if (name && email && password.length >= 6) {
+                    signUpWithEmail(name, email, password);
+                } else {
+                    showToast('كلمة المرور يجب أن تكون 6 أحرف على الأقل', 'error');
+                }
+            });
+
+            // حدث المزامنة
+            syncBtn.addEventListener('click', () => {
+                if (currentUser) {
+                    syncDataWithFirebase();
+                } else {
+                    showToast('يجب تسجيل الدخول أولاً لتمكين المزامنة', 'warning');
+                    loginModal.style.display = 'flex';
+                }
+            });
 
             // بدء التطبيق
             initApp();
